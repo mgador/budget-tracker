@@ -2,12 +2,20 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 
-const authRoutes = require("./routes/authRoutes");
-
 const app = express();
 app.use(express.json());
 
-app.use("/auth", authRoutes);
+const expenseRoutes = require("./routes/expenseRoutes");
+const authRoutes = require("./routes/authRoutes");
+
+// Route middleware
+app.use("/api/expenses", expenseRoutes);
+app.use("/api/auth", authRoutes); // e.g., /login, /register
+
+// Test route
+app.get("/", (req, res) => {
+  res.send("💸 Budget Tracker API is running...");
+});
 
 mongoose
   .connect(process.env.MONGO_URI)
